@@ -42,16 +42,18 @@ bot.on(message('voice'), async (ctx) => {
 
         const response = await openai.chat(ctx.session.messages)
 
-ctx.session.messages.push({
-    role: openai.roles.ASSISTANT,
-    content: response.content,
-})
-
-    await ctx.reply(response.content)
-    }catch (e){
+        setTimeout(async () => {
+          ctx.session.messages.push({
+            role: openai.roles.ASSISTANT,
+            content: response.content,
+          })
+    
+          await ctx.reply(response.content)
+        }, 3000) // Delay of 3 seconds
+      } catch (e) {
         console.log(`Error while voice message`, e.message)
-    }
-})
+      }
+    })
 
 bot.on(message('text'), async (ctx) => {
     ctx.session ??= INITIAL_SESSION
